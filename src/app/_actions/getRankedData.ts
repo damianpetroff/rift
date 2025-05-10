@@ -51,6 +51,6 @@ type RankedData = {
 }
 
 export const getRankedData = async () : Promise<RankedData> => {
-  const response = await fetch(`https://lol-web-api.op.gg/api/v1.0/internal/bypass/champions/euw/ranked`);
+  const response = await fetch(`https://lol-web-api.op.gg/api/v1.0/internal/bypass/champions/euw/ranked`); // Deprecated
   return response.json();
 };
