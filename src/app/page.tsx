@@ -1,7 +1,7 @@
 import { getChampionsData } from './_actions/getChampions';
 import { getLatestPatch } from './_actions/getLatestPatch';
 
-export default async function LolPage() {
+export default async function HomePage() {
   const latestPatch = await getLatestPatch();
   const championData = await getChampionsData(latestPatch);
   const champions = Object.entries(championData.data).map(([, value]) => value.name);
