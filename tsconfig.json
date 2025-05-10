@@ -18,7 +18,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@ddragon/*": ["./src/lib/ddragon/*"]
     },
     "target": "ES2017"
   },
