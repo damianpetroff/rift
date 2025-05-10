@@ -5,10 +5,10 @@ export default function ChampionCard({
   champion,
   patch,
 }: Readonly<{ champion: ChampionDetailed; patch: string }>) {
-  const img = getImageUrl({ type: 'loading', patch, imageFile: `${champion.id}_3.jpg` });
+  const img = getImageUrl({ type: 'loading', patch, imageFile: `${champion.id}_0.jpg` });
   return (
     <div
-      className="relative z-10 h-72 w-40 overflow-hidden rounded-sm border border-white/25 transition-transform duration-100 ease-in-out hover:z-20 hover:scale-105"
+      className="relative z-10 h-80 w-44 overflow-hidden rounded-lg border border-white/25 transition-transform duration-100 ease-in-out hover:z-20 hover:scale-105"
       key={champion.key}
     >
       <Image
@@ -19,10 +19,13 @@ export default function ChampionCard({
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
       />
 
-      <div className="absolute right-0 bottom-0 left-0 flex flex-col gap-y-2 p-2">
-        <h2 className="text-center text-xs font-bold tracking-widest text-white/80 uppercase">
-          {champion.name}
-        </h2>
+      <div className="absolute right-0 bottom-0 left-0 z-50 flex flex-col gap-y-2 p-2">
+        <div className="flex flex-col justify-center">
+          <h2 className="text-center text-sm font-bold tracking-widest text-white/80 uppercase">
+            {champion.name}
+          </h2>
+          <p className="text-center text-xs font-thin text-white/80">{champion.title}</p>
+        </div>
         <div className="flex justify-center gap-1">
           {champion.spells.map(spell => (
             <span
@@ -40,6 +43,7 @@ export default function ChampionCard({
           ))}
         </div>
       </div>
+      <div className="absolute top-1/2 right-0 bottom-0 left-0 bg-gradient-to-t from-black/80 to-transparent" />
     </div>
   );
 }
