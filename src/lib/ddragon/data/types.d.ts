@@ -1,4 +1,4 @@
-type DDragonChampionResponse<T> = {
+type DDragonResponse<T> = {
   type: string;
   format: string;
   version: string;

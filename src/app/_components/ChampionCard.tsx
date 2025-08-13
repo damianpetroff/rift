@@ -1,5 +1,6 @@
 import { getImageUrl } from '@/lib/ddragon/assets/images';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function ChampionCard({
   champion,
@@ -7,9 +8,10 @@ export default function ChampionCard({
 }: Readonly<{ champion: ChampionDetailed; patch: string }>) {
   const img = getImageUrl({ type: 'loading', patch, imageFile: `${champion.id}_0.jpg` });
   return (
-    <div
+    <Link
       className="relative z-10 h-80 w-44 overflow-hidden rounded-lg border border-white/25 transition-transform duration-100 ease-in-out hover:z-20 hover:scale-105"
       key={champion.key}
+      href={`/champions/${champion.id}`}
     >
       <Image
         src={img}
@@ -44,6 +46,6 @@ export default function ChampionCard({
         </div>
       </div>
       <div className="absolute top-1/2 right-0 bottom-0 left-0 bg-gradient-to-t from-black/80 to-transparent" />
-    </div>
+    </Link>
   );
 }

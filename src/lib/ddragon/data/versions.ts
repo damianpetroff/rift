@@ -1,4 +1,4 @@
-'use server-only';
+'use server';
 
 import { fetcher } from './fetcher';
 
