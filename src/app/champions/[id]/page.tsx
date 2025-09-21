@@ -3,7 +3,14 @@ import { getChampion } from '@/lib/ddragon/data';
 import { getLatestPatch } from '@/lib/ddragon/data/versions';
 import Image from 'next/image';
 
-export default async function Page({ params: { id } }: { params: { id: string } }) {
+interface PageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+export default async function Page({ params }: PageProps) {
+  const { id } = await params;
   const patch = await getLatestPatch();
   const champion = await getChampion({ patch, champion: id });
 
@@ -43,7 +50,7 @@ export default async function Page({ params: { id } }: { params: { id: string } 
           <li>PV: {champion.stats.hp}</li>
           <li>Mana: {champion.stats.mp}</li>
           <li>Attaque: {champion.stats.attackdamage}</li>
-          <li>Vitesse d'attaque: {champion.stats.attackspeed}</li>
+          <li>Vitesse d&apos;attaque: {champion.stats.attackspeed}</li>
           <li>Armure: {champion.stats.armor}</li>
           <li>Résistance magique: {champion.stats.spellblock}</li>
           <li>Vitesse de déplacement: {champion.stats.movespeed}</li>
