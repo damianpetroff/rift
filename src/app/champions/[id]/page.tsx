@@ -9,11 +9,9 @@ export default async function Page({ params: { id } }: { params: { id: string } 
 
   return (
     <main className="flex flex-col items-center gap-8 p-12">
-      {/* Nom et titre */}
       <h1 className="text-5xl font-bold">{champion.name}</h1>
       <h2 className="text-xl text-gray-500">{champion.title}</h2>
 
-      {/* Image principale */}
       <div className="relative h-72 w-40">
         <Image
           src={getImageUrl({ type: 'loading', patch, imageFile: `${champion.id}_0.jpg` })}
@@ -24,12 +22,10 @@ export default async function Page({ params: { id } }: { params: { id: string } 
         />
       </div>
 
-      {/* Biographie */}
       <section className="max-w-2xl text-center">
         <p className="text-lg">{champion.lore}</p>
       </section>
 
-      {/* Rôles */}
       <section>
         <h3 className="text-lg font-semibold">Rôles</h3>
         <div className="flex justify-center gap-2">
@@ -41,7 +37,6 @@ export default async function Page({ params: { id } }: { params: { id: string } 
         </div>
       </section>
 
-      {/* Statistiques principales */}
       <section className="w-full max-w-xl">
         <h3 className="mb-2 text-lg font-semibold">Statistiques</h3>
         <ul className="grid grid-cols-2 gap-2">

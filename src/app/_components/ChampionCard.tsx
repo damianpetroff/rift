@@ -26,6 +26,7 @@ export default function ChampionCard({
           <h2 className="text-center text-sm font-bold tracking-widest text-white/80 uppercase">
             {champion.name}
           </h2>
+
           <p className="text-center text-xs font-thin text-white/80">{champion.title}</p>
         </div>
         <div className="flex justify-center gap-1">
