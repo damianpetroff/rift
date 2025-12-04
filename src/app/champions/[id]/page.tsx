@@ -1,5 +1,6 @@
 import { getImageUrl } from '@/lib/ddragon/assets/images';
 import { getChampion } from '@/lib/ddragon/data';
+import { getChampions } from '@/lib/ddragon/data/champions';
 import { getLatestPatch } from '@/lib/ddragon/data/versions';
 import Image from 'next/image';
 
@@ -9,53 +10,89 @@ interface PageProps {
   }>;
 }
 
+export const revalidate = 86400; // Revalidate this page every 24 hours
+
+export const generateStaticParams = async () => {
+  const patch = await getLatestPatch();
+  const champions = await getChampions({ patch });
+  return champions.map(champion => ({
+    id: champion.id,
+  }));
+};
+
 export default async function Page({ params }: PageProps) {
   const { id } = await params;
   const patch = await getLatestPatch();
   const champion = await getChampion({ patch, champion: id });
 
   return (
-    <main className="flex flex-col items-center gap-8 p-12">
-      <h1 className="text-5xl font-bold">{champion.name}</h1>
-      <h2 className="text-xl text-gray-500">{champion.title}</h2>
-
-      <div className="relative h-72 w-40">
-        <Image
-          src={getImageUrl({ type: 'loading', patch, imageFile: `${champion.id}_0.jpg` })}
-          alt={champion.name}
-          style={{ objectFit: 'contain' }}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
+    <main className="flex w-full flex-col items-start gap-8 p-12">
+      <div>
+        <h1 className="text-5xl font-bold">{champion.name}</h1>
+        <h2 className="text-xl text-gray-500">{champion.title}</h2>
       </div>
 
-      <section className="max-w-2xl text-center">
-        <p className="text-lg">{champion.lore}</p>
-      </section>
-
-      <section>
-        <h3 className="text-lg font-semibold">Rôles</h3>
-        <div className="flex justify-center gap-2">
-          {champion.tags.map(tag => (
-            <span key={tag} className="rounded bg-blue-200 px-2 py-1 text-sm">
-              {tag}
-            </span>
-          ))}
+      <div className="flex flex-row items-start gap-4">
+        <div className="relative h-[600px] w-[330px]">
+          <Image
+            src={getImageUrl({ type: 'loading', patch, imageFile: `${champion.id}_0.jpg` })}
+            alt={champion.name}
+            style={{ objectFit: 'contain' }}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            unoptimized
+          />
         </div>
-      </section>
+        <div className="flex flex-col gap-4">
+          <section className="max-w-4xl text-left">
+            <p className="text-sm text-gray-500 italic">"{champion.lore}"</p>
+          </section>
+          <section>
+            <h3 className="text-lg font-semibold">Rôles</h3>
+            <div className="flex justify-center gap-2">
+              {champion.tags.map(tag => (
+                <span key={tag} className="rounded bg-slate-600 px-2 py-1 text-sm">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </section>
 
-      <section className="w-full max-w-xl">
-        <h3 className="mb-2 text-lg font-semibold">Statistiques</h3>
-        <ul className="grid grid-cols-2 gap-2">
-          <li>PV: {champion.stats.hp}</li>
-          <li>Mana: {champion.stats.mp}</li>
-          <li>Attaque: {champion.stats.attackdamage}</li>
-          <li>Vitesse d&apos;attaque: {champion.stats.attackspeed}</li>
-          <li>Armure: {champion.stats.armor}</li>
-          <li>Résistance magique: {champion.stats.spellblock}</li>
-          <li>Vitesse de déplacement: {champion.stats.movespeed}</li>
-        </ul>
-      </section>
+          <section className="w-full max-w-xl">
+            <h3 className="mb-2 text-lg font-semibold">Statistics</h3>
+            <div className="grid grid-cols-2 gap-2 font-bold">
+              <p className="flex flex-col justify-center">
+                <span className="text-sm text-emerald-700 uppercase">Health</span>
+                <span className="text-normal text-emerald-500">{champion.stats.hp}</span>
+              </p>
+              <p className="flex flex-col justify-center">
+                <span className="text-sm text-sky-700 uppercase">Mana</span>
+                <span className="text-normal text-sky-500">{champion.stats.mp}</span>
+              </p>
+              <p className="flex flex-col justify-center">
+                <span className="text-sm text-amber-700 uppercase">AD</span>
+                <span className="text-normal text-amber-500">{champion.stats.attackdamage}</span>
+              </p>
+              <p className="flex flex-col justify-center">
+                <span className="text-sm text-yellow-500 uppercase">AS</span>
+                <span className="text-normal text-yellow-300">{champion.stats.attackspeed}</span>
+              </p>
+              <p className="flex flex-col justify-center">
+                <span className="text-sm text-yellow-700 uppercase">Armor</span>
+                <span className="text-normal text-yellow-500">{champion.stats.armor}</span>
+              </p>
+              <p className="flex flex-col justify-center">
+                <span className="text-sm text-sky-700 uppercase">MR</span>
+                <span className="text-normal text-sky-500">{champion.stats.spellblock}</span>
+              </p>
+              <p className="flex flex-col justify-center">
+                <span className="text-sm text-amber-400 uppercase">Movement Speed</span>
+                <span className="text-normal text-amber-400">{champion.stats.movespeed}</span>
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
 
       {/* Compétence passive */}
       <section className="w-full max-w-xl">
@@ -66,6 +103,7 @@ export default async function Page({ params }: PageProps) {
             alt={champion.passive.name}
             width={48}
             height={48}
+            unoptimized
           />
           <div>
             <p className="font-bold">{champion.passive.name}</p>
@@ -91,6 +129,7 @@ export default async function Page({ params }: PageProps) {
                   fill
                   sizes="25vw"
                   className="rounded-full border-2 border-blue-300"
+                  unoptimized
                 />
                 <span className="absolute -top-2 -left-2 flex h-6 w-6 items-center justify-center rounded-full bg-blue-400 font-bold text-white shadow">
                   {['Q', 'W', 'E', 'R'][i] ?? ''}

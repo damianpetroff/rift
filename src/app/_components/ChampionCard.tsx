@@ -1,12 +1,14 @@
+'use client';
+
 import { getImageUrl } from '@/lib/ddragon/assets/images';
+import { useData } from '@/providers/DataProvider';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function ChampionCard({
-  champion,
-  patch,
-}: Readonly<{ champion: ChampionDetailed; patch: string }>) {
+export default function ChampionCard({ champion }: Readonly<{ champion: ChampionDetailed }>) {
+  const { patch } = useData();
   const img = getImageUrl({ type: 'loading', patch, imageFile: `${champion.id}_0.jpg` });
+
   return (
     <Link
       className="relative z-10 h-80 w-44 overflow-hidden rounded-lg border border-white/25 transition-transform duration-100 ease-in-out hover:z-20 hover:scale-105"
